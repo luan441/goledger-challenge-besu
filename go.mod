@@ -2,7 +2,10 @@ module github.com/luan441/goledger-challenge-besu
 
 go 1.23.4
 
-require github.com/ethereum/go-ethereum v1.14.12
+require (
+	github.com/ethereum/go-ethereum v1.14.12
+	github.com/lib/pq v1.10.9
+)
 
 require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect

@@ -15,3 +15,5 @@ besu/contracts/build/contracts
 
 .DS_Store
 tmp
+
+data
