@@ -4,6 +4,6 @@ import "time"
 
 type BlockchainValue struct {
 	ID        int
-	Value     string
+	Value     int64
 	CreatedAt time.Time
 }

@@ -54,7 +54,7 @@ func SetHandle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := SetResponse{
-		Message: fmt.Sprintf("The value %v wwas successfuly registered", st.Value),
+		Message: fmt.Sprintf("The value %v was successfuly registered", st.Value),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
