@@ -44,7 +44,7 @@ type InputOutput struct {
 	Type         string `json:"type"`
 }
 
-func ExecContract(value big.Int) error {
+func ExecContract(value int64) error {
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("error retrieving directory: %v", err)
@@ -124,7 +124,7 @@ func ExecContract(value big.Int) error {
 		return err
 	}
 
-	tx, err := boundContract.Transact(auth, "set", value)
+	tx, err := boundContract.Transact(auth, "set", big.NewInt(value))
 	if err != nil {
 		log.Fatalf("error transacting: %v", err)
 		return err
@@ -148,25 +148,25 @@ func ExecContract(value big.Int) error {
 	return nil
 }
 
-func CallContract() (big.Int, error) {
-	var result interface{}
+func CallContract() (int64, error) {
+	var result *big.Int
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("error retrieving directory: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 
 	jsonFile, err := os.Open(fmt.Sprintf("%s/besu/artifacts/contracts/SimpleStorage.sol/SimpleStorage.json", dir))
 	if err != nil {
 		log.Fatalf("error opening json file: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 	defer jsonFile.Close()
 
 	content, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatalf("error reading json file: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 
 	var simpleStorage SimpleStorage
@@ -174,19 +174,19 @@ func CallContract() (big.Int, error) {
 	err = json.Unmarshal(content, &simpleStorage)
 	if err != nil {
 		log.Fatalf("error Unmarshal: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 
 	abiJSON, err := json.Marshal(simpleStorage.Abi)
 	if err != nil {
 		log.Fatalf("error Marshal: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 
 	abi, err := abi.JSON(strings.NewReader(string(abiJSON)))
 	if err != nil {
 		log.Fatalf("error parsing abi: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -195,7 +195,7 @@ func CallContract() (big.Int, error) {
 	client, err := ethclient.DialContext(ctx, "http://localhost:8545")
 	if err != nil {
 		log.Fatalf("error connecting to eth client: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
 	defer client.Close()
 
@@ -217,11 +217,10 @@ func CallContract() (big.Int, error) {
 	err = boundContract.Call(&caller, &output, "get")
 	if err != nil {
 		log.Fatalf("error calling contract: %v", err)
-		return *big.NewInt(0), err
+		return 0, err
 	}
-	result = output
-	val := result.(int64)
+	result = output[0].(*big.Int)
 
 	fmt.Println("Successfully called contract!", result)
-	return *big.NewInt(val), nil
+	return result.Int64(), nil
 }
