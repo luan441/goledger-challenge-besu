@@ -47,20 +47,20 @@ type InputOutput struct {
 func ExecContract(value int64) error {
 	dir, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("error retrieving directory: %v", err)
+		log.Printf("error retrieving directory: %v", err)
 		return err
 	}
 
 	jsonFile, err := os.Open(fmt.Sprintf("%s/besu/artifacts/contracts/SimpleStorage.sol/SimpleStorage.json", dir))
 	if err != nil {
-		log.Fatalf("error opening json file: %v", err)
+		log.Printf("error opening json file: %v", err)
 		return err
 	}
 	defer jsonFile.Close()
 
 	content, err := io.ReadAll(jsonFile)
 	if err != nil {
-		log.Fatalf("error reading json file: %v", err)
+		log.Printf("error reading json file: %v", err)
 		return err
 	}
 
@@ -68,19 +68,19 @@ func ExecContract(value int64) error {
 
 	err = json.Unmarshal(content, &simpleStorage)
 	if err != nil {
-		log.Fatalf("error Unmarshal: %v", err)
+		log.Printf("error Unmarshal: %v", err)
 		return err
 	}
 
 	abiJSON, err := json.Marshal(simpleStorage.Abi)
 	if err != nil {
-		log.Fatalf("error Marshal: %v", err)
+		log.Printf("error Marshal: %v", err)
 		return err
 	}
 
 	abi, err := abi.JSON(strings.NewReader(string(abiJSON)))
 	if err != nil {
-		log.Fatalf("error parsing abi: %v", err)
+		log.Printf("error parsing abi: %v", err)
 		return err
 	}
 
@@ -89,7 +89,7 @@ func ExecContract(value int64) error {
 
 	client, err := ethclient.DialContext(ctx, "http://localhost:8545")
 	if err != nil {
-		log.Fatalf("error dialing node: %v", err)
+		log.Printf("error dialing node: %v", err)
 		return err
 	}
 
@@ -97,7 +97,7 @@ func ExecContract(value int64) error {
 
 	chainID, err := client.ChainID(ctx)
 	if err != nil {
-		log.Fatalf("error querying chain id: %v", err)
+		log.Printf("error querying chain id: %v", err)
 		return err
 	}
 	defer client.Close()
@@ -114,19 +114,19 @@ func ExecContract(value int64) error {
 
 	priv, err := crypto.HexToECDSA("c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3")
 	if err != nil {
-		log.Fatalf("error loading private key: %v", err)
+		log.Printf("error loading private key: %v", err)
 		return err
 	}
 
 	auth, err := bind.NewKeyedTransactorWithChainID(priv, chainID)
 	if err != nil {
-		log.Fatalf("error creating transactor: %v", err)
+		log.Printf("error creating transactor: %v", err)
 		return err
 	}
 
 	tx, err := boundContract.Transact(auth, "set", big.NewInt(value))
 	if err != nil {
-		log.Fatalf("error transacting: %v", err)
+		log.Printf("error transacting: %v", err)
 		return err
 	}
 
@@ -140,7 +140,7 @@ func ExecContract(value int64) error {
 		tx,
 	)
 	if err != nil {
-		log.Fatalf("error waiting for transaction to be mined: %v", err)
+		log.Printf("error waiting for transaction to be mined: %v", err)
 		return err
 	}
 
@@ -152,20 +152,20 @@ func CallContract() (int64, error) {
 	var result *big.Int
 	dir, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("error retrieving directory: %v", err)
+		log.Printf("error retrieving directory: %v", err)
 		return 0, err
 	}
 
 	jsonFile, err := os.Open(fmt.Sprintf("%s/besu/artifacts/contracts/SimpleStorage.sol/SimpleStorage.json", dir))
 	if err != nil {
-		log.Fatalf("error opening json file: %v", err)
+		log.Printf("error opening json file: %v", err)
 		return 0, err
 	}
 	defer jsonFile.Close()
 
 	content, err := io.ReadAll(jsonFile)
 	if err != nil {
-		log.Fatalf("error reading json file: %v", err)
+		log.Printf("error reading json file: %v", err)
 		return 0, err
 	}
 
@@ -173,19 +173,19 @@ func CallContract() (int64, error) {
 
 	err = json.Unmarshal(content, &simpleStorage)
 	if err != nil {
-		log.Fatalf("error Unmarshal: %v", err)
+		log.Printf("error Unmarshal: %v", err)
 		return 0, err
 	}
 
 	abiJSON, err := json.Marshal(simpleStorage.Abi)
 	if err != nil {
-		log.Fatalf("error Marshal: %v", err)
+		log.Printf("error Marshal: %v", err)
 		return 0, err
 	}
 
 	abi, err := abi.JSON(strings.NewReader(string(abiJSON)))
 	if err != nil {
-		log.Fatalf("error parsing abi: %v", err)
+		log.Printf("error parsing abi: %v", err)
 		return 0, err
 	}
 
@@ -194,7 +194,7 @@ func CallContract() (int64, error) {
 
 	client, err := ethclient.DialContext(ctx, "http://localhost:8545")
 	if err != nil {
-		log.Fatalf("error connecting to eth client: %v", err)
+		log.Printf("error connecting to eth client: %v", err)
 		return 0, err
 	}
 	defer client.Close()
@@ -216,7 +216,7 @@ func CallContract() (int64, error) {
 	var output []interface{}
 	err = boundContract.Call(&caller, &output, "get")
 	if err != nil {
-		log.Fatalf("error calling contract: %v", err)
+		log.Printf("error calling contract: %v", err)
 		return 0, err
 	}
 	result = output[0].(*big.Int)
