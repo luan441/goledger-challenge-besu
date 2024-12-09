@@ -6,7 +6,7 @@ To accomplish that, we recommend you use a UNIX-like machine (Linux/macOS). Besi
 
 ## Documentation
 
-To read the documentation [click here](https://github.com/luan441/goledger-challenge-besu/DOCUMENTATION.md)
+To read the documentation [click here](/DOCUMENTATION.md)
 
 ## Install the prerequisites
 
