@@ -4,6 +4,10 @@ On this challenge, you will interact with a Besu node. The goal is to create a s
 
 To accomplish that, we recommend you use a UNIX-like machine (Linux/macOS). Besides that, we will need to install NPM/NPX, Hardhat and Docker.
 
+## Documentation
+
+To read the documentation [click here](https://github.com/luan441/goledger-challenge-besu/DOCUMENTATION.md)
+
 ## Install the prerequisites
 
 - Install NPM and NPX (https://www.npmjs.com/get-npm)
@@ -11,9 +15,9 @@ To accomplish that, we recommend you use a UNIX-like machine (Linux/macOS). Besi
 - Install Docker and Docker Compose (https://www.docker.com/)
 - Install Besu (https://besu.hyperledger.org/private-networks/get-started/install/binary-distribution)
 - Install Go (https://golang.org/dl/)
-- Fork the repository https://github.com/goledgerdev/goledger-challenge-besu 
-    - Fork it, do **NOT** clone it, since you will need to send us your forked repository
-	- If you cannot fork it, create a private repository and give access to `samuelvenzi` and `Tubar2`
+- Fork the repository https://github.com/goledgerdev/goledger-challenge-besu
+  - Fork it, do **NOT** clone it, since you will need to send us your forked repository
+  - If you cannot fork it, create a private repository and give access to `samuelvenzi` and `Tubar2`
 
 ### Hardhat installation details
 
@@ -53,27 +57,34 @@ Your task is to create a simple application that interacts with a Besu blockchai
 ## Requirements
 
 1. **Programming Language:**
+
    - The application must be written in Go.
 
 2. **API Type:**
+
    - Choose either REST or gRPC for the service interface.
    - If implementing gRPC, enable reflection so we can test it using tools like Postman.
 
 3. **Database Integration:**
+
    - Use an SQL database (e.g., PostgreSQL or MySQL).
    - Store the value of the smart contract variable in the database.
 
 4. **Endpoints:**
+
    - The application should provide the following functionality via appropriately named endpoints or methods:
 
      1. **SET:**
+
         - Set a new value for the smart contract variable.
         - The application should send this value to the deployed smart contract on the Besu network.
 
      2. **GET:**
+
         - Retrieve the current value of the smart contract variable from the blockchain.
 
      3. **SYNC:**
+
         - Synchronize the value of the smart contract variable from the blockchain to the SQL database.
 
      4. **CHECK:**
@@ -81,6 +92,7 @@ Your task is to create a simple application that interacts with a Besu blockchai
         - Return `true` if they are the same, otherwise return `false`.
 
    - **Endpoint Naming:**
+
      - You may name the endpoints/methods as you see fit, provided their functionality meets the requirements outlined above.
 
    - **General Notes:**
